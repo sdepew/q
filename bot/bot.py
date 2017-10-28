@@ -19,18 +19,22 @@ class Bot:
             are valid commands. If so, then acts on the commands. If not,
             returns back what it needs for clarification.
         """
-        if command.startswith("!") and command.lstrip('!') in command_map.command_map:
+        if command.startswith("!") and \
+                command.lstrip('!') in command_map.command_map:
             response = self.call(command)
-        elif command.startswith(self.AT_BOT) and command.startswith(self.AT_BOT).lstrip(self.AT_BOT) in command_map.command_map:
+        elif command.startswith(self.AT_BOT) and \
+                command.startswith(self.AT_BOT).lstrip(self.AT_BOT) \
+                in command_map.command_map:
             response = self.call(command)
         else:
-            response = "Yeah, I'm definitely not working. Maybe @aaron can fix me."
-        self.client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
+            response = "Yeah, I'm definitely not working."
+        self.client.api_call("chat.postMessage",
+                             channel=channel,
+                             text=response,
+                             as_user=True)
 
     def call(self, name=None, *args, **kwargs):
-        from IPython import embed
         command = command_map.call(name.lstrip('!'), *args, **kwargs)
-        # embed()
         if not command:
             raise Exception("{} does not exist".format(name))
         return command
@@ -44,21 +48,25 @@ class Bot:
         output_list = slack_rtm_output
         if output_list and len(output_list) > 0:
             for output in output_list:
-                if output and 'text' in output and output['text'].lstrip('!') in command_map.command_map:
+                if output and 'text' in output and \
+                        output['text'].lstrip('!') in command_map.command_map:
                     # return text after the @ mention, whitespace removed
                     return output['text'].strip().lower(), output['channel']
         return None, None
 
     def run(self, slack_client):
-        read_websocket_delay = 1  # 1 second delay between reading from firehose
+        # 1 second delay between reading from firehose
+        read_websocket_delay = 1
         if slack_client.rtm_connect():
             print("q, at your service!")
             while True:
-                command, channel = self.parse_slack_output(slack_client.rtm_read())
+                command, channel = self.parse_slack_output(
+                    slack_client.rtm_read())
                 if command and channel:
                     self.handle_command(command, channel)
                 sleep(read_websocket_delay)
         else:
             print("Connection failed. Invalid Slack token or bot ID?")
+
 
 q = Bot()

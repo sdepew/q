@@ -1,7 +1,6 @@
 from collections import defaultdict
 import json
 import logging
-import socket
 
 
 APP_NAME = 'q'
@@ -12,7 +11,6 @@ logger = logging.getLogger(__name__)
 class Config():
     def __init__(self):
         self.loaded_json = defaultdict(dict)
-        domain = 'test'
 
     def load_json(self, filename):
         if filename not in self.loaded_json:
