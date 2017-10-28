@@ -1,6 +1,7 @@
-from bot.config import config
 import logging
 import traceback
+
+from bot.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ class CommandMap:
             return command
         return command_wrapper
 
-    def register_listener(self, available_in_airgap=False):
+    def register_listener(self):
         def listener_wrapper(command):
             self.listener_commands.append(command)
             return command

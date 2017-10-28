@@ -9,7 +9,7 @@ APP_NAME = 'q'
 logger = logging.getLogger(__name__)
 
 
-class Config(ServiceConfig):
+class Config():
     def __init__(self):
         self.loaded_json = defaultdict(dict)
         domain = 'test'

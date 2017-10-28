@@ -2,6 +2,7 @@ import logging
 from random import choice
 
 from bot.command_map import command_map
+
 from bot.config import config
 
 logger = logging.getLogger(__name__)

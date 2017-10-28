@@ -1,10 +1,3 @@
 {
-"durellw": ["Tanaka-san"],
-"nelsj": ["Tanaka-san", "Taking a look"],
-"hkester": ["Thai", "Really? Do you really need to ask?"],
-"thai": ["Thai", "Do you need to ask?"],
-"default": ["Thai", "Thai", "Thai", "Fridays", "Sushi", "Breeze", "Guapos", "Chipotle", "Moes", "Chutzpah", "Bon Chon", "Kabobs", "Potbelly", "Lake Anne Market Deli", "Super Pho", "Spazio"],
-"worldgate": ["Thai", "Qdoba", "A-Deli", "Panera", "Pho", "Sushi", "Subway", "Fridays", "Spazio"],
-"sea": ["The Berliner", "Markethouse", "Tats", "State Burger", "Petra", "Lil Woody's", "Saley's", "Pizza Mart", "Courthouse Cafe", "Potbelly", "Specialty's", "Farestart", "NY City Deli", "Lunchbox Laboratory", "Nordstrom Grill", "Pike Place Chowder"],
-"sachinh": ["State Burger", "Please concentrate and try again"]
+  "default": ["Thai", "Thai", "Thai", "Fridays", "Sushi", "Breeze",  "Chipotle", "Moes", "Pizza", "Maybe you should skip a meal? ¯\\_(ツ)_/¯"]
 }
