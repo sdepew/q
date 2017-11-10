@@ -1,3 +1,3 @@
 theme: jekyll-theme-architect
-title: Q - Not Your Average Slack Bot
-description: Q is your 21st century slack bot. He uses API Gateway and Lambda along with Slack Event Subscriptions and webhooks to help you and all of your friends do cool things. 
+title: Q
+description: Not Your Average Slack Bot
