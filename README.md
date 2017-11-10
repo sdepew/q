@@ -1,8 +1,6 @@
-## Welcome to GitHub Pages
+## Meet Q
 
-You can use the [editor on GitHub](https://github.com/LEXmono/q/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Q is your 21st century slack bot. He uses API Gateway and Lambda along with Slack Event Subscriptions and webhooks to help you and all of your friends do cool things. 
 
 ### Markdown
 
