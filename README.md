@@ -2,34 +2,22 @@
 
 Q is your 21st century slack bot. He uses API Gateway and Lambda along with Slack Event Subscriptions and webhooks to help you and all of your friends do cool things. 
 
-### Markdown
+### Getting Help From Q
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Q Works by slack event subscriptions. When a channel sends a subscription event to the API gateway endpoint specified, Lambda reads the input from slack and parses out the text. If the response begins with `!` then the bot processes the command. Everything else is thrown away. 
 
-```markdown
-Syntax highlighted code block
+#### Example Usage
 
-# Header 1
-## Header 2
-### Header 3
+You can type `!help` to get a list of current commands Q knows. 
 
-- Bulleted
-- List
+>Michael Henry: !help 
+>Q APP: I know how to do: !chuck, !food, !motivation, !nasa, !reverse, !shrug, !weather 
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/LEXmono/q/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+*Having trouble with Q?* 
+Please first check if there is an existing issueon [GitHub](https://github.com/LEXmono/q/issues). If there is not then please submit a new issue.
+
+*Have a Feature Request?*
+Please first check if there is an existing issueon [GitHub](https://github.com/LEXmono/q/issues). If there is not then please [submit a new request](https://github.com/LEXmono/q/issues/new).
