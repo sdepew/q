@@ -55,14 +55,12 @@ def getWeatherLocation(input=[]):
 
 def get_weather(data, forecast=False):
     if forecast == False:
-        print("Not Forecast:")
         params = {'lat': data['lat'],
                   'lon': data['lng'],
                   'APPID': weather_api_key,
                   'units': 'imperial'}
         return requests.get('https://api.openweathermap.org/data/2.5/weather', params=params).json()
     else:
-        print("Forecast:")
         params = {'lat': data['lat'],
                   'lon': data['lng'],
                   'cnt': '16',

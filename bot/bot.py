@@ -6,10 +6,9 @@ of the British Secret Service MI6.
 
 import os
 from bot.command_map import command_map
-from bot.commons import qisims
+from bot.commons import qisims, shrug_variable, degree_sign, DEFAULT_LOCATION
 from slackclient import SlackClient
 import random
-
 
 # Python Logging stuff
 import logging
@@ -90,6 +89,7 @@ class Bot:
     @staticmethod
     def call(name=None, *args, **kwargs):
         command = command_map.call(name.lstrip('!'), *args, **kwargs)
+        logger.debug("Running command: {}\n Result: {}".format(name, command))
         if not command:
             raise Exception("{} does not exist".format(name))
         return command
