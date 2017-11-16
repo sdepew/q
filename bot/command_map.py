@@ -1,8 +1,6 @@
 import logging
 import traceback
 
-from bot.config import config
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,7 +51,6 @@ class CommandMap:
         return listener_wrapper
 
     def process_command(self, user, message_parts):
-        # lose the !, don't need it anymore
         message_parts[0] = message_parts[0].lstrip('!')
         command, arguments = message_parts[0], message_parts[1:]
         logger.debug("calling command: [" + command + "]")

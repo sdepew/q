@@ -1,5 +1,0 @@
-slackclient
-requests
-flake8
-setuptools
-wand
