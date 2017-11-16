@@ -1,13 +1,20 @@
 from bot.commands.weather import *
 from bot.commands.chuck import *
+from bot.commands.motivation import motivation
+
 
 def test_weather():
-    assert isinstance(weather(call_type="weather", zip_code="20170"), str)
+    assert isinstance(weather(query=["Auburn", "AL"]), str)
 
 
 def test_forecast():
-    assert isinstance(weather(call_type="forecast", zip_code="20170"), str)
+    assert isinstance(weather(query=["Auburn", "AL", "forecast"]), str)
 
 
 def test_chuck():
     assert isinstance(chuck(), str)
+
+
+def test_motivation():
+    assert isinstance(motivation(), str)
+

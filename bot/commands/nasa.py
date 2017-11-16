@@ -4,8 +4,8 @@ from requests.packages.urllib3.util.retry import Retry
 import os
 from datetime import datetime
 import random
-from time import sleep
 from bot.command_map import command_map
+
 
 # Retry method for Python Requests.
 def requests_retry_session(

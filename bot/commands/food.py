@@ -1,34 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
-Yelp Fusion API code
-
-Please refer to http://www.yelp.com/developers/v3/documentation for the API
-documentation.
-"""
 from __future__ import print_function
 
-import argparse
-import json
 import requests
-import sys
 import os
-import urllib
 import random
 from datetime import datetime, timedelta, time
-from bot.commons import *
 from bot.command_map import command_map
+from urllib.error import HTTPError
+from urllib.parse import quote
+from urllib.parse import urlencode
 import logging
 logger = logging.getLogger()
-
-# This client code can run on Python 2.x or 3.x.  Your imports can be
-# simpler if you only need one of those.
-try:
-    # For Python 3.0 and later
-    from urllib.error import HTTPError
-    from urllib.parse import quote
-    from urllib.parse import urlencode
-except ImportError as error1:
-    sys.exit("I am unable to get urllib. Here is the error: {}".format(error1))
 
 # https://www.yelp.com/developers/v3/manage_app
 CLIENT_ID = os.environ["YELP_CLIENT_ID"]
@@ -53,7 +35,6 @@ def obtain_bearer_token(host, path):
     Args:
         host (str): The domain host of the API.
         path (str): The path of the API after the domain.
-        url_params (dict): An optional set of query parameters in the request.
 
     Returns:
         str: OAuth bearer token, obtained using client_id and client_secret.
@@ -107,6 +88,7 @@ def search(bearer_token, term, location):
     """Query the Search API by a search term and location.
 
     Args:
+        bearer_token (str): OAuth bearer token, obtained using client_id and client_secret.
         term (str): The search term passed to the API.
         location (str): The search location passed to the API.
 
@@ -126,6 +108,7 @@ def get_business(bearer_token, business_id):
     """Query the Business API by a business ID.
 
     Args:
+        bearer_token (str): OAuth bearer token, obtained using client_id and client_secret.
         business_id (str): The ID of the business to query.
 
     Returns:
@@ -152,8 +135,8 @@ def query_api(term, location):
     logger.debug('Response from response.get(\'businesses\'): {}'.format(businesses))
     if not businesses:
         return 'No businesses for {0} in {1} found.'.format(term, location)
-    answer =  "What about these for {} in {}:\n".format(term, location)
-    answer += "".join(random.sample(["<{}|{}>\n".format(x['url'], x['name']) for x in businesses],4))
+    answer = "What about these for {} in {}:\n".format(term, location)
+    answer += "".join(random.sample(["<{}|{}>\n".format(x['url'], x['name']) for x in businesses], 5))
     return answer
 
 
@@ -163,17 +146,17 @@ def food(query=[]):
     Get food recommendations for a place.
     --------------------------------------------------------
     *Usage:*
-    `!food [ZipCode] [City] [State]` returns food recomendations for a location.
+    `!food [ZipCode] [City] [State]` returns food recommendations for a location.
     If no Zip Code is specified, it defaults to a location
     from a few predefined, at random.
     --------------------------------------------------------
     '''
     current_time = datetime.now() - timedelta(hours=5)
-    if current_time.time() >= time(10,30) and current_time.time() <= time(13,30):
+    if time(10, 30) <= current_time.time() <= time(13, 30):
         term = 'lunch'
-    elif current_time.time() >= time(13,31) and current_time.time() <= time(22,00):
+    elif time(13, 31) <= current_time.time() <= time(22, 00):
         term = 'dinner'
-    elif current_time.time() >= time(0,0) and current_time.time() <= time(10,29):
+    elif time(0, 0) <= current_time.time() <= time(10, 29):
         term = 'breakfast'
     else:
         term = 'bars'
@@ -187,6 +170,3 @@ def food(query=[]):
     except HTTPError as error:
         return "Uh oh! I found an error:\n    Code: {0}\n    {1}\n    {2}".format(error.code, error.url, error.read())
     return result
-
-if __name__ == "__main__":
-    print(find_food("Auburn, AL", "lunch"))

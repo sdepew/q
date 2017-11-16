@@ -1,12 +1,11 @@
 import requests
-import random
 import os
 from datetime import datetime
-from bot.commons import *
+from bot.commons import degree_sign
 from bot.command_map import command_map
-import boto3
-import io
-import re
+# import boto3
+# import io
+# import re
 
 import logging
 logger = logging.getLogger()
@@ -69,7 +68,7 @@ def get_weather(data, forecast=False):
                   'cnt': '16',
                   'APPID': weather_api_key,
                   'units': 'imperial'}
-        #return requests.get('https://api.openweathermap.org/data/2.5/forecast/daily', params=params).json()
+        # return requests.get('https://api.openweathermap.org/data/2.5/forecast/daily', params=params).json()
         return requests.get('https://api.openweathermap.org/data/2.5/forecast', params=params).json()
 
 

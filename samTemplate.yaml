@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Q Bot Lambda Functions
+Resources:
+  Q-handleBotEvent:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: bot.bot.q_input
+      Runtime: python3.6
+      CodeUri: ./
+      Events:
+        q-bot:
+          Type: Api
+          Properties:
+            Path: /event-handler
+            Method: POST
