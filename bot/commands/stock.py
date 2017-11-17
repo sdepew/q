@@ -22,29 +22,32 @@ def stock(query=[]):
     --------------------------------------------------------
     '''
     response = ""
-    for symbol in query:
-        params = {
-            'function': 'TIME_SERIES_DAILY_ADJUSTED',
-            'symbol': symbol,
-            'apikey': os.environ['ALPHA_VANTAGE_API_KEY']
-        }
-        url = 'https://www.alphavantage.co/query'
-        request = requests.get(url, params=params)
-        if request.ok:
-            data = request.json()['Time Series (Daily)'][today_date]
-            try:
-                response += "============={}=============\n".format(symbol.upper())
-                response += "*Adjusted Final:* `{}`\n*Opening:* `{}`\n" \
-                            "*High:* `{}`\n*Low:* `{}`\n".format('${:,.2f}'.format(float(data['5. adjusted close'])),
-                                                                 '${:,.2f}'.format(float(data['1. open'])),
-                                                                 '${:,.2f}'.format(float(data['2. high'])),
-                                                                 '${:,.2f}'.format(float(data['3. low'])))
-            except KeyError as badkeys:
-                logger.error("EXCEPTION: KeyError {}\ndata: {}".format(badkeys, data))
-                return "KeyError from Alpha Vantage. Did they change something? {}".format(badkeys)
-        else:
-            logger.error("Unable to get Stock from Alpha Vantage."
-                         "Error Code: {}\n Error: {}".format(request.status_code, request.content))
-            response += "Unable to get stock price from Alpha Vantage for `{}`. Try again in a bit.".format(symbol)
-    logger.debug("Returning Stock Info: {}".format(response))
+    if query:
+        for symbol in query:
+            params = {
+                'function': 'TIME_SERIES_DAILY_ADJUSTED',
+                'symbol': symbol,
+                'apikey': os.environ['ALPHA_VANTAGE_API_KEY']
+            }
+            url = 'https://www.alphavantage.co/query'
+            request = requests.get(url, params=params)
+            if request.ok:
+                data = request.json()['Time Series (Daily)'][today_date]
+                try:
+                    response += "============={}=============\n".format(symbol.upper())
+                    response += "*Price:* `{}`*Opening:* `{}`" \
+                                "*High:* `{}`*Low:* `{}`".format('${:,.2f}'.format(float(data['5. adjusted close'])),
+                                                                     '${:,.2f}'.format(float(data['1. open'])),
+                                                                     '${:,.2f}'.format(float(data['2. high'])),
+                                                                     '${:,.2f}'.format(float(data['3. low'])))
+                except KeyError as badkeys:
+                    logger.error("EXCEPTION: KeyError {}\ndata: {}".format(badkeys, data))
+                    return "KeyError from Alpha Vantage. Did they change something? {}".format(badkeys)
+            else:
+                logger.error("Unable to get Stock from Alpha Vantage."
+                             "Error Code: {}\n Error: {}".format(request.status_code, request.content))
+                response += "Unable to get stock price from Alpha Vantage for `{}`. Try again in a bit.".format(symbol)
+        logger.debug("Returning Stock Info: {}".format(response))
+    else:
+        response += "Please enter one or more stock symbol(s). Type `!help stock` for more. `"
     return response

@@ -7,7 +7,7 @@ def help(query=[], user=None):
     if not query:
         response = 'I know how to do these: {}\n'.format(', '.join(
             sorted(["`!{}`".format(k) for k in command_map.help_map.keys()])))
-        response += '*Type `!help command` (Notice no ! on the command) for more details.*'
+        response += '*Type `!help command` for more details.* ( Notice no ! on the command )'
         return response
     else:
         return '{}: {}'.format(query[0], command_map.help(query[0]))
