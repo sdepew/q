@@ -28,7 +28,7 @@ def find_source(item):
 
 
 @command_map.register_command()
-def news(query=[]):
+def news(query=[], user=""):
     '''
     Get the news.
     --------------------------------------------------------

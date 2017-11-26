@@ -141,7 +141,7 @@ def query_api(term, location):
 
 
 @command_map.register_command(aliases=['lunch', 'dinner'])
-def food(query=[]):
+def food(query=[], user=""):
     '''
     Get food recommendations for a place.
     --------------------------------------------------------

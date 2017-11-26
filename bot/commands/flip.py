@@ -2,7 +2,7 @@ from bot.command_map import command_map
 
 
 @command_map.register_command()
-def flip(query=[]):
+def flip(query=[], user=""):
     '''
     We all have those table flip moments.
     *Usge:*

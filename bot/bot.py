@@ -28,6 +28,7 @@ def log_handler(event):
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 BOT_NAME = os.environ["BOT_NAME"]
 BOT_ID = os.environ["BOT_ID"]
+DEFAULT_CHANNEL = os.environ["DEFAULT_CHANNEL"]
 
 
 class Bot:
@@ -60,6 +61,7 @@ class Bot:
         logger.debug("Context passed to lambda function: {}".format(context))
         logger.debug("Available Commands:\n<===============================>{}".format(command_map.command_map))
         slack_event = data['event']
+        logger.debug("User: {}".format(slack_event['user']))
         command_raw_list = slack_event['text'].split(" ")  # Input made into a list for parsing into its parts.
         command = command_raw_list[0]  # Actual command. Starts with ! and ends at first space.
         query = command_raw_list[1::]  # Everything after the first space.
@@ -68,12 +70,12 @@ class Bot:
         if command.startswith("!") and \
                 command.lstrip('!') in command_map.command_map:
             logger.debug("Command found in Command Map: {}".format(command))
-            response = self.call(command, query)
+            response = self.call(command, query, user=slack_event['user'])
         elif command.startswith(self.AT_BOT) and \
                 command.startswith(self.AT_BOT).lstrip(self.AT_BOT) \
                 in command_map.command_map:
             logger.debug("Command directed at bot and found in Command Map: {}".format(command))
-            response = self.call(command, query)
+            response = self.call(command, query, user=slack_event['user'])
         elif command.startswith("!") and command.lstrip('!') not in command_map.command_map:
             logger.debug("Command {} not found in command map.".format(command))
             response = "{}\n{}".format(random.choice(qisims), self.call("!help"))
@@ -85,6 +87,18 @@ class Bot:
                              channel=channel,
                              text=response,
                              as_user=False)
+
+    # def say(self, data):
+    #     if isinstance(data, str):
+    #         response = data
+    #     elif isinstance(data, list):
+    #         response = " ".join(data)
+    #     else:
+    #         response = "I got back: `{}`.\nI hope this makes sense to you...".format(str(data))
+    #     self.client.api_call("chat.postMessage",
+    #                          channel=DEFAULT_CHANNEL,
+    #                          text=response,
+    #                          as_user=False)
 
     @staticmethod
     def call(name=None, *args, **kwargs):

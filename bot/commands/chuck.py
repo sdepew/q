@@ -6,7 +6,7 @@ params = {"escape": "javascript"}
 
 
 @command_map.register_command()
-def chuck(query=[]):
+def chuck(query=[], user=""):
     '''
     Facts about Chuck Norris.
     *Usage:*

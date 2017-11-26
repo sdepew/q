@@ -30,7 +30,7 @@ def requests_retry_session(
 
 
 @command_map.register_command()
-def nasa(query=[]):
+def nasa(query=[], user=""):
     ''' Get NASA's Picture of the Day.
     --------------------------------------------------------
     *Usage:*
@@ -50,7 +50,7 @@ def nasa(query=[]):
 
 
 @command_map.register_command()
-def mars(query=[]):
+def mars(query=[], user=""):
     ''' Get a random picture of Mars.
     --------------------------------------------------------
     *Usage:*

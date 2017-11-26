@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from bot.commons import degree_sign
 from bot.command_map import command_map
+from bot.commands.remember import read_from_dynamodb
 # import boto3
 # import io
 # import re
@@ -73,7 +74,7 @@ def get_weather(data, forecast=False):
 
 
 @command_map.register_command()
-def weather(query=[]):
+def weather(query=[], user=""):
     '''
     Get the weather.
     --------------------------------------------------------
@@ -82,13 +83,27 @@ def weather(query=[]):
     `!weather 20170 [forecast]` - Returns Weather for the zipcode.
     `!weather Herndon, VA [forecast]` - Returrns Weather for the City.
     You can also include the word "forecast" to get a detailed forecast.
+    You can also set a preference so you dont have to type your location
+    every time. Try `!help remember` for more details.
     --------------------------------------------------------
     '''
+    command = ""
+    preferred_location = ""
+    try:
+        preferred_location = read_from_dynamodb(['weather:'], user)['weather']
+    except KeyError as weather_key_error:
+        logger.debug("No Preference set: {}".format(weather_key_error))
+        command += "No preference set, use `!remember weather:12345` to set your preference\n"
+        pass
     if "forecast" in (x.lower() for x in query):
-        cleaned_location = getWeatherLocation(query)
+        if preferred_location:
+            cleaned_location = getWeatherLocation([preferred_location])
+            location = preferred_location
+        else:
+            cleaned_location = getWeatherLocation(query)
+            location += " ".join([x for x in query if x.lower() != "forecast"])
         weather = get_weather(cleaned_location, forecast=True)
-        location = " ".join([x for x in query if x.lower() != "forecast"])
-        command = "Here is your forecast for {}\n".format(location)
+        command += "Here is your forecast for {}\n".format(location)
         if logger.getEffectiveLevel() == 10:  # If Debug
             command += "Latitude: {} Longitude: {}\n".format(cleaned_location['lat'], cleaned_location['lng'])
         command += "".join(["*<!date^{}^{}|{}>:* {}{}F - {}\n".format(x['dt'],
@@ -98,9 +113,11 @@ def weather(query=[]):
             degree_sign,
             x['weather'][0]['description'].title()) for x in weather['list']])
     elif query:
-        cleaned_location = getWeatherLocation(query)
+        if preferred_location:
+            cleaned_location = getWeatherLocation([preferred_location])
+        else:
+            cleaned_location = getWeatherLocation(query)
         weather = get_weather(cleaned_location, forecast=False)
-        command = ""
         if logger.getEffectiveLevel() == 10:  # If Debug
             command += "Latitude: {} Longitude: {}\n".format(cleaned_location['lat'], cleaned_location['lng'])
         command += "*It is currently* `{}{}F` in {}. *Today's Weather:* `{}` *High:* `{}{}F` *Low:* `{}{}F`".format(
@@ -112,21 +129,37 @@ def weather(query=[]):
             degree_sign,weather['main']['temp_min'],
             degree_sign)
     else:
-        command = ""
-        for item in [["Herndon", "VA"], ["Auburn", "AL"]]:
-            cleaned_location = getWeatherLocation(item)
+
+        if preferred_location:
+            cleaned_location = getWeatherLocation([preferred_location])
             weather = get_weather(cleaned_location)
-            location = " ".join([x for x in item if x.lower() != "forecast"])
             if logger.getEffectiveLevel() == 10:  # If Debug
-                command += "Here is your weather for {}\n".format(location)
+                command += "Here is your weather for {}\n".format(preferred_location)
                 command += "Latitude: {} Longitude: {}\n".format(cleaned_location['lat'], cleaned_location['lng'])
             command += "*It is currently* `{}{}F` in {}. *Current Weather:* `{}` *High:* `{}{}F` *Low:* `{}{}F`\n".format(
                 weather['main']['temp'],
                 degree_sign,
-                " ".join(item),
+                preferred_location,
                 weather['weather'][0]['description'].title(),
                 weather['main']['temp_max'],
                 degree_sign,
                 weather['main']['temp_min'],
                 degree_sign)
+        else:
+            for item in [["Herndon", "VA"], ["Auburn", "AL"]]:
+                cleaned_location = getWeatherLocation(item)
+                weather = get_weather(cleaned_location)
+                location = " ".join([x for x in item if x.lower() != "forecast"])
+                if logger.getEffectiveLevel() == 10:  # If Debug
+                    command += "Here is your weather for {}\n".format(location)
+                    command += "Latitude: {} Longitude: {}\n".format(cleaned_location['lat'], cleaned_location['lng'])
+                command += "*It is currently* `{}{}F` in {}. *Current Weather:* `{}` *High:* `{}{}F` *Low:* `{}{}F`\n".format(
+                    weather['main']['temp'],
+                    degree_sign,
+                    " ".join(item),
+                    weather['weather'][0]['description'].title(),
+                    weather['main']['temp_max'],
+                    degree_sign,
+                    weather['main']['temp_min'],
+                    degree_sign)
     return command

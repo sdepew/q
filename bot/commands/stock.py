@@ -13,7 +13,7 @@ today_date = datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d')
 
 
 @command_map.register_command()
-def stock(query=[]):
+def stock(query=[], user=""):
     '''
     Get Stock Prices
     --------------------------------------------------------

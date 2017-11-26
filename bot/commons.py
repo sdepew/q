@@ -28,3 +28,10 @@ def prepare_response(text="", attachment=""):
     tuple_response = namedtuple('tuple_response', 'text attachment')
     response = tuple_response(text=text, attachment=attachment)
     return response
+
+
+def variable_exists(variable):
+    if variable in locals() or variable in globals():
+        return True
+    else:
+        return False
