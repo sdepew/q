@@ -113,10 +113,7 @@ def weather(query=[], user=""):
             degree_sign,
             x['weather'][0]['description'].title()) for x in weather['list']])
     elif query:
-        if preferred_location:
-            cleaned_location = getWeatherLocation([preferred_location])
-        else:
-            cleaned_location = getWeatherLocation(query)
+        cleaned_location = getWeatherLocation(query)
         weather = get_weather(cleaned_location, forecast=False)
         if logger.getEffectiveLevel() == 10:  # If Debug
             command += "Latitude: {} Longitude: {}\n".format(cleaned_location['lat'], cleaned_location['lng'])
@@ -129,7 +126,6 @@ def weather(query=[], user=""):
             degree_sign,weather['main']['temp_min'],
             degree_sign)
     else:
-
         if preferred_location:
             cleaned_location = getWeatherLocation([preferred_location])
             weather = get_weather(cleaned_location)

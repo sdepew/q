@@ -32,11 +32,11 @@ def stock(query=[], user=""):
             url = 'https://www.alphavantage.co/query'
             request = requests.get(url, params=params)
             if request.ok:
-                data = request.json()['Time Series (Daily)'][today_date]
+                data = next(iter(request.json()['Time Series (Daily)'].values()))
                 try:
                     response += "============={}=============\n".format(symbol.upper())
                     response += "*Price:* `{}`*Opening:* `{}`" \
-                                "*High:* `{}`*Low:* `{}`".format('${:,.2f}'.format(float(data['5. adjusted close'])),
+                                "*High:* `{}`*Low:* `{}`\n".format('${:,.2f}'.format(float(data['5. adjusted close'])),
                                                                      '${:,.2f}'.format(float(data['1. open'])),
                                                                      '${:,.2f}'.format(float(data['2. high'])),
                                                                      '${:,.2f}'.format(float(data['3. low'])))
@@ -51,3 +51,5 @@ def stock(query=[], user=""):
     else:
         response += "Please enter one or more stock symbol(s). Type `!help stock` for more. `"
     return response
+
+
