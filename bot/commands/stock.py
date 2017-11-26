@@ -35,11 +35,11 @@ def stock(query=[], user=""):
                 data = next(iter(request.json()['Time Series (Daily)'].values()))
                 try:
                     response += "============={}=============\n".format(symbol.upper())
-                    response += "*Price:* `{}`*Opening:* `{}`" \
-                                "*High:* `{}`*Low:* `{}`\n".format('${:,.2f}'.format(float(data['5. adjusted close'])),
-                                                                     '${:,.2f}'.format(float(data['1. open'])),
-                                                                     '${:,.2f}'.format(float(data['2. high'])),
-                                                                     '${:,.2f}'.format(float(data['3. low'])))
+                    response += "*Price:* `{}` *Opening:* `{}`" \
+                                "*High:* `{}` *Low:* `{}`\n".format('${:,.2f}'.format(float(data['5. adjusted close'])),
+                                                                    '${:,.2f}'.format(float(data['1. open'])),
+                                                                    '${:,.2f}'.format(float(data['2. high'])),
+                                                                    '${:,.2f}'.format(float(data['3. low'])))
                 except KeyError as badkeys:
                     logger.error("EXCEPTION: KeyError {}\ndata: {}".format(badkeys, data))
                     return "KeyError from Alpha Vantage. Did they change something? {}".format(badkeys)

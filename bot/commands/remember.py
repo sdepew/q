@@ -176,11 +176,11 @@ def remember(query=[], user=""):
     *Usage:*
     `!remember music:google weather:20170` - Add preference.
     `!remember list` - List your current preferences.
-    `!remember google: delete`
+    `!remember google: delete` - Enter a command including the colon and the keyword `delete`
     Each `command:preference` set *MUST* be set in the format indicated.
-    I can set preferences for: {}
+    I can set preferences for: `weather`
     --------------------------------------------------------
-    '''.format(", ".join(sorted(remember_options)))
+    '''
     logger.debug("Trying to update user preferences.\nUser: {}, Query {}".format(user, query))
     if "list" in query:
         prefs = get_all_prefs(user)
